@@ -4,31 +4,40 @@ import com.example.tickets.TicketService;
 import java.util.List;
 
 /**
- * Starter demo that shows why mutability is risky.
- *
- * After refactor:
- * - direct mutation should not compile (no setters)
- * - external modifications to tags should not affect the ticket
- * - service "updates" should return a NEW ticket instance
+ * Demo showing immutability in action.
  */
 public class TryIt {
 
     public static void main(String[] args) {
-        TicketService service = new TicketService();
+        TicketService ticketManager = new TicketService();
 
-        IncidentTicket t = service.createTicket("TCK-1001", "reporter@example.com", "Payment failing on checkout");
-        System.out.println("Created: " + t);
+        // Create ticket
+        IncidentTicket baseTicket = ticketManager.createTicket(
+                "TCK-1001",
+                "reporter@example.com",
+                "Payment failing on checkout"
+        );
+        System.out.println("Created: " + baseTicket);
 
-        // Demonstrate post-creation mutation through service
-        service.assign(t, "agent@example.com");
-        service.escalateToCritical(t);
-        System.out.println("\nAfter service mutations: " + t);
+        // "Update" returns NEW ticket - original unchanged
+        IncidentTicket delegated = ticketManager.assign(baseTicket, "agent@example.com");
+        IncidentTicket upgraded = ticketManager.escalateToCritical(delegated);
 
-        // Demonstrate external mutation via leaked list reference
-        List<String> tags = t.getTags();
-        tags.add("HACKED_FROM_OUTSIDE");
-        System.out.println("\nAfter external tag mutation: " + t);
+        System.out.println("\nAfter updates:");
+        System.out.println("  Original : " + baseTicket);
+        System.out.println("  Assigned : " + delegated);
+        System.out.println("  Escalated: " + upgraded);
 
-        // Starter compiles; after refactor, you should redesign updates to create new objects instead.
+        // Try external tag mutation - will fail
+        List<String> labelsList = upgraded.getTags();
+        try {
+            labelsList.add("HACKED_FROM_OUTSIDE");
+            System.out.println("\nBUG: Mutation succeeded!");
+        } catch (UnsupportedOperationException e) {
+            System.out.println("\nExternal mutation blocked!");
+        }
+
+        // No setters exist - won't compile:
+        // baseTicket.setPriority("LOW");
     }
 }

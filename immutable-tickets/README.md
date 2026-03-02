@@ -24,28 +24,28 @@ Tasks
    - safe getters (no internal state leakage)
 
 2) Introduce `IncidentTicket.Builder`
-   - Required: `id`, `reporterEmail`, `title`
-   - Optional: `description`, `priority`, `tags`, `assigneeEmail`, `customerVisible`, `slaMinutes`, `source`
+   - Required: `ticketCode`, `submitterMail`, `heading`
+   - Optional: `details`, `severity`, `labels`, `handlerMail`, `clientAccessible`, `responseTimeMinutes`, `origin`
    - Builder should be fluent (`builder().id(...).title(...).build()`)
 
 3) Centralize validation
    - Move ALL validation to `Builder.build()`
    - Use helpers in `Validation.java` (add more if needed)
    - Examples:
-     - id: non-empty, length <= 20, only [A-Z0-9-] (you can reuse helper)
-     - reporterEmail/assigneeEmail: must look like an email
-     - title: non-empty, length <= 80
-     - priority: one of LOW/MEDIUM/HIGH/CRITICAL
-     - slaMinutes: if provided, must be between 5 and 7,200
+     - ticketCode: non-empty, length <= 20, only [A-Z0-9-] (you can reuse helper)
+     - submitterMail/handlerMail: must look like an email
+     - heading: non-empty, length <= 80
+     - severity: one of LOW/MEDIUM/HIGH/CRITICAL
+     - responseTimeMinutes: if provided, must be between 5 and 7,200
 
 4) Update `TicketService`
    - Stop mutating a ticket after creation
-   - Any “updates” should create a **new** ticket instance (e.g., by Builder copy/from method)
+   - Any "updates" should create a **new** ticket instance (e.g., by Builder copy/from method)
    - Keep the API simple; you can add `toBuilder()` or `Builder.from(existing)`
 
 Acceptance
 - `IncidentTicket` has no public setters and fields are final.
-- Tickets cannot be modified after creation (including tags list).
+- Tickets cannot be modified after creation (including labels list).
 - Validation happens only in one place (`build()`).
 - `TryIt` still works, but now demonstrates immutability (attempted mutations should not compile or have no effect).
 - Code compiles and runs with the starter commands below.
@@ -58,5 +58,5 @@ Build/Run (Starter demo)
 Tip
 After refactor, you can update `TryIt` to show:
 - building a ticket
-- “updating” by creating a new instance
-- tags list is not mutable from outside
+- "updating" by creating a new instance
+- labels list is not mutable from outside
