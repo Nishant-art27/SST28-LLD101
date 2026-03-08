@@ -9,23 +9,23 @@ public class MapRenderer {
 
     public void render(List<MapMarker> markers) {
         System.out.println("Rendering " + markers.size() + " markers...");
-        int shown = 0;
+        int displayedCount = 0;
 
-        for (MapMarker m : markers) {
+        for (MapMarker marker : markers) {
             // Simulate some "rendering" work
-            if (shown < 8) {
-                System.out.println(format(m));
-                shown++;
+            if (displayedCount < 8) {
+                System.out.println(format(marker));
+                displayedCount++;
             }
         }
 
-        if (markers.size() > shown) {
-            System.out.println("... (" + (markers.size() - shown) + " more not shown)");
+        if (markers.size() > displayedCount) {
+            System.out.println("... (" + (markers.size() - displayedCount) + " more not shown)");
         }
     }
 
-    private String format(MapMarker m) {
+    private String format(MapMarker marker) {
         return String.format("%s @ (%.4f, %.4f) style=%s",
-                m.getLabel(), m.getLat(), m.getLng(), m.getStyle());
+                marker.getLabel(), marker.getLat(), marker.getLng(), marker.getStyle());
     }
 }

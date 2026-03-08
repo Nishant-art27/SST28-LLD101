@@ -22,12 +22,12 @@ public class ReportFile {
     }
 
     public void display(User user) {
-        String content = loadFromDisk();
+        String reportContent = loadFromDisk();
         System.out.println("REPORT -> id=" + reportId
                 + " title=" + title
                 + " classification=" + classification
                 + " openedBy=" + user.getName());
-        System.out.println("CONTENT: " + content);
+        System.out.println("CONTENT: " + reportContent);
     }
 
     private String loadFromDisk() {

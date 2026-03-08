@@ -8,10 +8,10 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) {
-        int n = 30_000;
+        int totalMarkers = 30_000;
 
-        MapDataSource ds = new MapDataSource();
-        List<MapMarker> markers = ds.loadMarkers(n);
+        MapDataSource dataSource = new MapDataSource();
+        List<MapMarker> markers = dataSource.loadMarkers(totalMarkers);
 
         new MapRenderer().render(markers);
 

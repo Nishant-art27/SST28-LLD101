@@ -3,14 +3,14 @@ package com.example.reports;
 public class AccessControl {
 
     public boolean canAccess(User user, String classification) {
-        String role = user.getRole();
+        String userRole = user.getRole();
 
         if ("PUBLIC".equals(classification)) return true;
         if ("FACULTY".equals(classification)) {
-            return "FACULTY".equals(role) || "ADMIN".equals(role);
+            return "FACULTY".equals(userRole) || "ADMIN".equals(userRole);
         }
         if ("ADMIN".equals(classification)) {
-            return "ADMIN".equals(role);
+            return "ADMIN".equals(userRole);
         }
         return false;
     }

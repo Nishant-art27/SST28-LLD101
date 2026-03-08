@@ -15,18 +15,18 @@ import java.util.Set;
 public class QuickCheck {
 
     public static void main(String[] args) {
-        int n = 20_000;
+        int markerCount = 20_000;
 
-        MapDataSource ds = new MapDataSource();
-        List<MapMarker> markers = ds.loadMarkers(n);
+        MapDataSource dataSource = new MapDataSource();
+        List<MapMarker> markers = dataSource.loadMarkers(markerCount);
 
-        Set<Integer> identities = new HashSet<>();
-        for (MapMarker m : markers) {
-            identities.add(System.identityHashCode(m.getStyle()));
+        Set<Integer> styleIdentities = new HashSet<>();
+        for (MapMarker marker : markers) {
+            styleIdentities.add(System.identityHashCode(marker.getStyle()));
         }
 
-        System.out.println("Markers: " + n);
-        System.out.println("Unique style instances (by identity): " + identities.size());
+        System.out.println("Markers: " + markerCount);
+        System.out.println("Unique style instances (by identity): " + styleIdentities.size());
         System.out.println("Expected after Flyweight: <= " + (3 * 4 * 4 * 2) + " (shape*color*size*filled)");
     }
 }
